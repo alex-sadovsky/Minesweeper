@@ -1,0 +1,35 @@
+@use 'sass:color';
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: #0b1d26;
+  color: #f1f5f9;
+}
+
+a {
+  color: color.adjust(#38bdf8, $lightness: 5%);
+}
+
+a:hover {
+  color: color.adjust(#38bdf8, $lightness: 15%);
+}
+
+button,
+select {
+  font: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid rgba(56, 189, 248, 0.65);
+  outline-offset: 2px;
+}
