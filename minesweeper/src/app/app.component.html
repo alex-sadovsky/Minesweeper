@@ -1,0 +1,71 @@
+<main class="app-container">
+  <section class="game-panel">
+    <header class="panel-header">
+      <div class="title-group">
+        <h1>Minesweeper</h1>
+        <p class="subtitle">A classic puzzle of logic and luck</p>
+      </div>
+      <div class="status-chip" [ngClass]="gameStatus">{{ statusMessage }}</div>
+    </header>
+
+    <div class="controls">
+      <label class="control-group" for="difficulty">
+        <span class="control-label">Difficulty</span>
+        <select
+          id="difficulty"
+          class="control-input"
+          [value]="selectedDifficulty.label"
+          (change)="handleDifficultyChange($event)"
+        >
+          <option *ngFor="let difficulty of difficulties" [value]="difficulty.label">
+            {{ difficulty.label }} — {{ difficulty.rows }}×{{ difficulty.cols }} with
+            {{ difficulty.mines }} mines
+          </option>
+        </select>
+      </label>
+
+      <button type="button" class="control-button" (click)="resetGame()">New game</button>
+    </div>
+
+    <dl class="stats" aria-label="Game statistics">
+      <div class="stat">
+        <dt>Flags</dt>
+        <dd>{{ remainingFlags }} / {{ totalMines }}</dd>
+      </div>
+      <div class="stat">
+        <dt>Revealed</dt>
+        <dd>{{ revealedSafeCells }} / {{ safeCells }}</dd>
+      </div>
+    </dl>
+
+    <div
+      class="board"
+      role="grid"
+      [style.gridTemplateColumns]="gridTemplateColumns"
+      [attr.aria-disabled]="gameStatus !== 'playing'"
+    >
+      <button
+        *ngFor="let cell of boardCells; trackBy: trackByCell"
+        type="button"
+        class="cell"
+        [ngClass]="getCellClasses(cell)"
+        (click)="revealCell(cell)"
+        (contextmenu)="onCellRightClick($event, cell)"
+        [attr.aria-label]="cellAriaLabel(cell)"
+      >
+        <span *ngIf="cell.isRevealed && cell.isMine">💣</span>
+        <span *ngIf="cell.isFlagged && !cell.isRevealed">🚩</span>
+        <span *ngIf="cell.isRevealed && !cell.isMine && cell.adjacentMines > 0">
+          {{ cell.adjacentMines }}
+        </span>
+      </button>
+    </div>
+
+    <footer class="hints">
+      <p>
+        Left-click to reveal a tile. Right-click (or press with two fingers on touch devices) to
+        place or remove a flag.
+      </p>
+    </footer>
+  </section>
+</main>
